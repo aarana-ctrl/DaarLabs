@@ -52,12 +52,15 @@ export function ProjectCard({
           {project.shortDescription}
         </p>
         <div className="mt-6 flex items-center justify-between gap-4">
-          <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-gold border border-gold/40 group-hover:border-gold group-hover:bg-gold/10 px-4 py-2 squircle transition-colors">
-            Expand Details
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </span>
           <span className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground whitespace-nowrap">
             {project.tag}
+          </span>
+          {/* affordance only — the whole card is the link */}
+          <span
+            aria-hidden
+            className="text-gold opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500"
+          >
+            →
           </span>
         </div>
       </div>

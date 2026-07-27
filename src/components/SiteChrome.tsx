@@ -2,38 +2,35 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
 /**
- * Storm ambience. `intensity` (0–1) lets a page dial the whole thing down —
- * the home page eases it to 0 as the hero scrolls away, so the lightning and
- * rain wind down to a stop instead of flickering behind the content.
+ * Storm ambience — distant lightning flashes over the page.
+ *
+ * `intensity` (0–1) lets a page dial it down: the home page eases it to 0 as
+ * the hero scrolls away, so the storm winds down to a stop rather than
+ * flickering behind the content below. Rain lives in the hero footage itself,
+ * so there's no overlay to draw here.
  */
 export function LightningLayer({ intensity = 1 }: { intensity?: number }) {
   if (intensity <= 0.01) return null;
-  const paused = intensity < 0.05 ? "paused" : "running";
+  const playState = intensity < 0.05 ? "paused" : "running";
   return (
     <>
       <div
         className="pointer-events-none fixed inset-0 z-40 bg-white lightning mix-blend-screen"
-        style={{ opacity: intensity, animationPlayState: paused, transition: "opacity 320ms linear" }}
+        style={{
+          opacity: intensity,
+          animationPlayState: playState,
+          transition: "opacity 320ms linear",
+        }}
       />
       <div
         className="pointer-events-none fixed inset-0 z-40 lightning"
         style={{
           animationDelay: "3.5s",
           opacity: intensity,
-          animationPlayState: paused,
+          animationPlayState: playState,
           transition: "opacity 320ms linear",
           background:
-            "radial-gradient(ellipse at 20% 10%, oklch(0.78 0.13 82 / 0.38), transparent 60%)",
-        }}
-      />
-      {/* falling rain — thins out and stops with the rest of the storm */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 z-40 rainfall"
-        style={{
-          opacity: 0.55 * intensity,
-          animationPlayState: paused,
-          transition: "opacity 320ms linear",
+            "radial-gradient(ellipse at 20% 10%, oklch(0.84 0.13 82 / 0.32), transparent 60%)",
         }}
       />
     </>
