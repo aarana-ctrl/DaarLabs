@@ -13,37 +13,102 @@ export type Project = {
   screenshots: { caption: string; image: string }[];
   /** Technology chips shown on the detail page. */
   stack: string[];
-  url: string;
+  /** Source repo. Omitted while a project is still private. */
+  url?: string;
   /** Optional live deployment. */
   liveUrl?: string;
   year: string;
 };
 
+const shot = (slug: string, i: number, caption: string) => ({
+  caption,
+  image: `https://picsum.photos/seed/${slug}-${i}/1600/1000`,
+});
+
 export const projects: Project[] = [
   {
     slug: "liquid",
     name: "Liquid",
-    tag: "Web / JavaScript",
+    tag: "Web / React",
     category: "Web",
     note: "Open source",
     shortDescription:
-      "A fluid, motion-first web experiment exploring liquid interfaces and generative visuals.",
+      "A degree and quarter planner for University of Washington students, powered by real MyPlan, DARS, DawgPath, and RateMyProfessors data.",
     longDescription:
-      "Liquid is an exploration in motion-first interface design — a study in how digital surfaces can behave less like documents and more like matter. Built with a focus on real-time animation, generative shaders, and interaction as material, it exists somewhere between a design system and an art piece.",
+      "UW students juggle a lot of tabs to plan a schedule: MyPlan to build one, DARS to audit degree progress, DawgPath for grade distributions, and RateMyProfessors to size up instructors. Liquid pulls all of it into a single planning surface and keeps the numbers exact by reading the student's own signed-in university data through a companion Chrome extension, so nothing is guessed. A recommendation model then ranks courses by how much of what you still need each one covers.",
     highlights: [
-      "Custom WebGL fluid simulation with cursor-driven forces",
-      "Motion primitives that stay under 60fps on modest hardware",
-      "Design tokens shaped by physics, not by grids",
+      "DARS audits imported automatically and rendered as a live progress card with every unmet requirement",
+      "Compare majors and minors side by side with exact per-category requirements, tagged Major / Minor / Both",
+      "Gen-ed picker ranks courses by how much of your remaining requirements each one satisfies",
+      "Course details with DawgPath grade distributions, live professor ratings, and open-seat counts",
+      "Drag-and-drop plan board that respects the UW calendar, with prerequisite awareness and clash detection",
+      "Seven wallpaper themes with live video backgrounds and adjustable liquid-glass blur",
     ],
     screenshots: [
-      { caption: "Idle liquid state — settled surface", image: "https://picsum.photos/seed/liquid-0/1600/1000" },
-      { caption: "Cursor interaction — displacement field", image: "https://picsum.photos/seed/liquid-1/1600/1000" },
-      { caption: "Generative palette response", image: "https://picsum.photos/seed/liquid-2/1600/1000" },
+      shot("liquid", 0, "Plan board — drag courses across quarters"),
+      shot("liquid", 1, "Degree audit — live progress and unmet requirements"),
+      shot("liquid", 2, "Course detail — grade distribution and live seats"),
     ],
-    stack: ["React", "TypeScript", "WebGL", "Vite", "Tailwind"],
-    liveUrl: "https://liquid-rouge.vercel.app",
+    stack: ["React 18", "Vite", "Node.js", "Express", "Firestore", "Chrome MV3", "JWT"],
     url: "https://github.com/aarana-ctrl/Liquid",
-    year: "2025",
+    liveUrl: "https://liquid-rouge.vercel.app",
+    year: "2026",
+  },
+  {
+    slug: "tabs",
+    name: "Tabs",
+    tag: "iOS & Web / Swift",
+    category: "iOS",
+    note: "Shipping",
+    shortDescription:
+      "A cross-platform poker session tracker for friend groups — running ledgers, guest players, and settlements synced in real time.",
+    longDescription:
+      "Tabs keeps a running ledger of profit and loss across poker sessions, handles guest players who don't have accounts, manages settlements, and gives every player a full history of their results. The SwiftUI iOS app and the React web app share one Firestore database, so any action on one platform is immediately reflected on the other.",
+    highlights: [
+      "Tables with unique reference codes, admins, and co-admins, plus an all-time P&L leaderboard",
+      "Live balance bar per session — the total net must reach $0 before settlement",
+      "Guest players tracked separately from the main leaderboard",
+      "Settlement mode where each player marks themselves settled before the admin closes the night",
+      "Admin controls: edit any entry retroactively, distribute a player's P&L, and manage a dispute fund",
+      "Analytics rolled up across every table — cumulative P&L, win rate, best and worst sessions",
+    ],
+    screenshots: [
+      shot("tabs", 0, "Table leaderboard — all-time P&L per player"),
+      shot("tabs", 1, "Live session with balance bar"),
+      shot("tabs", 2, "Player profile and session history"),
+    ],
+    stack: ["SwiftUI", "React 18", "TypeScript", "Vite", "Tailwind CSS", "Firebase"],
+    url: "https://github.com/aarana-ctrl/Tabs",
+    liveUrl: "https://tabs-web.vercel.app",
+    year: "2026",
+  },
+  {
+    slug: "taskflow",
+    name: "TaskFlow",
+    tag: "Web / React",
+    category: "Tool",
+    note: "Open source",
+    shortDescription:
+      "A student assignment tracker that syncs Canvas and Gradescope deadlines into one list, with natural-language task entry.",
+    longDescription:
+      'TaskFlow pulls assignments from Canvas, Gradescope, and course websites via their iCal feeds and merges them into a unified task list. You can also add your own tasks in plain English — "CS hw tuesday at 11pm" — and dates, days, and times are detected automatically. Tasks sort themselves into Overdue, Today, Upcoming, and Later, and sync across every device.',
+    highlights: [
+      "Canvas and Gradescope sync — paste an iCal feed URL once and it re-syncs every six hours",
+      "Natural language input that parses dates, days, times, and recurring schedules",
+      "Duplicate assignments across sources are collapsed automatically",
+      "Smart views — Today, Upcoming, All Tasks, Calendar, and Completed — plus a tappable week strip",
+      "Google and Apple sign-in through Firebase, with no passwords to manage",
+      "Mobile-first layout with a hamburger drawer, bottom-sheet details, and full safe-area support",
+    ],
+    screenshots: [
+      shot("taskflow", 0, "Unified task list sorted by urgency"),
+      shot("taskflow", 1, "Natural language quick capture"),
+      shot("taskflow", 2, "Calendar view with per-day indicators"),
+    ],
+    stack: ["React", "Firebase", "Vercel Functions", "iCal"],
+    url: "https://github.com/aarana-ctrl/taskFlow",
+    liveUrl: "https://taskflow-deploy-lilac.vercel.app",
+    year: "2026",
   },
   {
     slug: "ridepool",
@@ -52,72 +117,71 @@ export const projects: Project[] = [
     category: "iOS",
     note: "In development",
     shortDescription:
-      "A ride-pooling iOS app that connects nearby travelers heading the same direction.",
+      "School carpooling made simple — connects students and staff around shared events to cut the number of cars on the road.",
     longDescription:
-      "RidePool is a native iOS app for organizing shared rides between people who happen to be heading the same way. It's built for the small, repeated trips that don't warrant a rideshare but always end up costing one — the airport run, the weekend commute, the trip back to campus.",
+      "RidePool is an iOS app that connects students and staff at the same school around shared events, making it easy to find or offer rides and earn credits for driving. Sign-up is restricted to school-affiliated email addresses, and every user picks a role — student, staff, or club organizer — which determines whether they can post events.",
     highlights: [
-      "Native SwiftUI interface with map-first navigation",
-      "Route matching that prioritizes real overlap, not just proximity",
-      "Fare splitting and trust signals built in from day one",
+      "School-email-only access (.edu and .k12 domains) with a clear message for everyone else",
+      "Three roles — Student, Staff / Faculty, and Student Rep — controlling who can post events",
+      "Event feed with colour-coded categories, dates, and locations",
+      "Offer a ride with a seat count, or request a seat in someone's car with one tap",
+      "Accept or decline ride requests from the notifications tab, earning credits for each rider",
+      "Rewards shop where credits buy hoodies, gift cards, and sticker packs",
     ],
     screenshots: [
-      { caption: "Home — nearby pool matches", image: "https://picsum.photos/seed/ridepool-0/1600/1000" },
-      { caption: "Route detail with fare split", image: "https://picsum.photos/seed/ridepool-1/1600/1000" },
-      { caption: "Trip in progress", image: "https://picsum.photos/seed/ridepool-2/1600/1000" },
+      shot("ridepool", 0, "Upcoming events feed"),
+      shot("ridepool", 1, "Event detail with available ride offers"),
+      shot("ridepool", 2, "Credits and the rewards shop"),
     ],
-    stack: ["SwiftUI", "iOS 17+", "Firestore", "MapKit"],
+    stack: ["SwiftUI", "iOS 17+", "Firebase Auth", "Cloud Firestore"],
     url: "https://github.com/aarana-ctrl/RidePool",
     year: "2026",
   },
   {
-    slug: "tabs",
-    name: "Tabs",
-    tag: "iOS / Swift",
-    category: "iOS",
-    note: "Shipping",
+    slug: "daarforce",
+    name: "DaarForce",
+    tag: "In the forge",
+    category: "Tool",
+    note: "In development",
     shortDescription:
-      "A minimalist tab manager for iOS — designed to keep the noise out and the flow in.",
+      "Placeholder — details to come. DaarForce is in development and its repository is not yet public.",
     longDescription:
-      "Tabs is a small, opinionated tab manager for iOS. It doesn't try to replace your browser — it sits alongside it and gives you a quieter place to keep the things you actually mean to return to.",
+      "This entry is a placeholder. DaarForce is still being built and its repository isn't public, so there was nothing to scrape. Drop the real description, highlights, stack, and links in here whenever you're ready — the showcase, archive, and detail page all read from this one file.",
     highlights: [
-      "Gesture-first triage in under two seconds per tab",
-      "Local-first storage with iCloud sync",
-      "Zero telemetry, no accounts, no cruft",
+      "Placeholder highlight — replace with a real capability",
+      "Placeholder highlight — replace with a real capability",
+      "Placeholder highlight — replace with a real capability",
     ],
     screenshots: [
-      { caption: "Inbox — new tabs land here", image: "https://picsum.photos/seed/tabs-0/1600/1000" },
-      { caption: "Swipe to archive or promote", image: "https://picsum.photos/seed/tabs-1/1600/1000" },
-      { caption: "Focus mode", image: "https://picsum.photos/seed/tabs-2/1600/1000" },
+      shot("daarforce", 0, "Placeholder — screen one"),
+      shot("daarforce", 1, "Placeholder — screen two"),
+      shot("daarforce", 2, "Placeholder — screen three"),
     ],
-    stack: ["React", "SwiftUI", "Firebase Realtime DB", "Vite", "Framer Motion"],
-    liveUrl: "https://tabs-web.vercel.app",
-    url: "https://github.com/aarana-ctrl/Tabs",
-    year: "2025",
+    stack: ["TBD"],
+    year: "2026",
   },
   {
-    slug: "taskflow",
-    name: "taskFlow",
-    tag: "Web / HTML",
-    category: "Tool",
-    note: "Open source",
+    slug: "suits-ai",
+    name: "Suits AI",
+    tag: "In the forge",
+    category: "Research",
+    note: "In development",
     shortDescription:
-      "A lightweight task-flow tool for tracking what matters and letting go of what doesn't.",
+      "Placeholder — details to come. Suits AI is in development and its repository is not yet public. Working name, subject to change.",
     longDescription:
-      "taskFlow is a small task tool that refuses to grow into a project management platform. It tracks a short list, respects your attention, and disappears when the work is done.",
+      "This entry is a placeholder. Suits AI is still being built and its repository isn't public, so there was nothing to scrape, and the working name may change. Drop the real description, highlights, stack, and links in here whenever you're ready — every view picks them up automatically.",
     highlights: [
-      "Single-file, no build — open the HTML and go",
-      "Keyboard-first entry and triage",
-      "Exports to plain text so your data stays yours",
+      "Placeholder highlight — replace with a real capability",
+      "Placeholder highlight — replace with a real capability",
+      "Placeholder highlight — replace with a real capability",
     ],
     screenshots: [
-      { caption: "The list — nothing else", image: "https://picsum.photos/seed/taskflow-0/1600/1000" },
-      { caption: "Quick capture", image: "https://picsum.photos/seed/taskflow-1/1600/1000" },
-      { caption: "Weekly review", image: "https://picsum.photos/seed/taskflow-2/1600/1000" },
+      shot("suits-ai", 0, "Placeholder — screen one"),
+      shot("suits-ai", 1, "Placeholder — screen two"),
+      shot("suits-ai", 2, "Placeholder — screen three"),
     ],
-    stack: ["React", "Firebase", "iCal Sync", "Vercel"],
-    liveUrl: "https://taskflow-deploy-lilac.vercel.app",
-    url: "https://github.com/aarana-ctrl/taskFlow",
-    year: "2024",
+    stack: ["TBD"],
+    year: "2026",
   },
 ];
 

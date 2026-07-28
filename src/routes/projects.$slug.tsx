@@ -53,14 +53,20 @@ function ProjectDetail() {
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex items-center gap-3 border border-gold/40 hover:border-gold hover:bg-gold/10 hover:text-gold px-6 py-3.5 squircle text-[11px] tracking-[0.2em] uppercase transition-colors"
-            >
-              <span aria-hidden>{"<>"}</span> Source Code
-            </a>
+            {project.url ? (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-flex items-center gap-3 border border-gold/40 hover:border-gold hover:bg-gold/10 hover:text-gold px-6 py-3.5 squircle text-[11px] tracking-[0.2em] uppercase transition-colors"
+              >
+                <span aria-hidden>{"<>"}</span> Source Code
+              </a>
+            ) : (
+              <span className="inline-flex items-center gap-3 border border-border text-muted-foreground px-6 py-3.5 squircle text-[11px] tracking-[0.2em] uppercase">
+                Source Private
+              </span>
+            )}
             {project.liveUrl && (
               <a
                 href={project.liveUrl}

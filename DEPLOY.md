@@ -56,8 +56,28 @@ git add .gitattributes
    - Build Command: `npm run build`
    - Install Command: `npm install`
    - Output Directory: leave as detected
-4. No environment variables are needed
+4. Add the contact-form environment variables (Settings → Environment Variables):
+
+   | Name | Value |
+   |---|---|
+   | `RESEND_API_KEY` | your key from <https://resend.com/api-keys> |
+   | `CONTACT_FROM` | `DaarLabs <onboarding@resend.dev>` to start |
+
 5. Click **Deploy**
+
+### Contact form
+
+Messages submitted on `/contact` are forwarded to **Labs.daar@gmail.com** by a
+server-side function (`src/lib/contact.ts`), with the sender's address set as
+`reply_to` so you can reply straight from Gmail.
+
+Setup: create a free Resend account, generate an API key, and set the two variables
+above (locally, copy `.env.example` to `.env`). Until a domain is verified you can send
+from `onboarding@resend.dev`; once `daarlabs.com` DNS is verified in Resend, switch
+`CONTACT_FROM` to something like `DaarLabs <hello@daarlabs.com>`.
+
+Without a key the form shows a clear error rather than silently dropping messages,
+and the key stays server-side — it's never included in the browser bundle.
 
 You'll get a `daarlabs-web.vercel.app` URL. Every push to `main` redeploys automatically,
 and pull requests get their own preview URLs.
