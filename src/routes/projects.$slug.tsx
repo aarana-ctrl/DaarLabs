@@ -110,34 +110,35 @@ function ProjectDetail() {
           </ul>
         </section>
 
-        {/* ---------- Screens (placeholders until real captures land) ---------- */}
+        {/* ---------- Gallery (placeholder imagery until real captures land) ---------- */}
         <section className="mt-20">
           <div className="flex items-baseline justify-between gap-6 mb-8">
-            <h2 className="font-serif text-3xl md:text-4xl">Screens</h2>
+            <h2 className="font-serif text-3xl md:text-4xl">Gallery</h2>
             <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
-              Placeholder
+              Placeholder imagery
             </span>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+          <div className="space-y-8">
             {project.screenshots.map((s, i) => (
-              <figure key={i} className="group">
-                <div className="aspect-[3/4] w-full squircle border border-border bg-gradient-to-br from-card to-muted relative overflow-hidden transition-colors duration-500 group-hover:border-gold/40">
-                  <div
-                    aria-hidden
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "radial-gradient(circle at 50% 25%, oklch(0.84 0.13 82 / 0.1), transparent 62%)",
-                    }}
+              <figure
+                key={i}
+                className="group squircle border border-border bg-card/50 overflow-hidden transition-colors duration-500 hover:border-gold/40"
+              >
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
+                  <img
+                    src={s.image}
+                    alt={s.caption}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                   />
-                  <span className="absolute top-4 left-4 text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                  <span className="absolute top-4 left-4 text-[10px] tracking-[0.3em] uppercase text-white/70 mix-blend-difference">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="absolute inset-0 flex items-center justify-center font-serif text-2xl text-foreground/25 group-hover:text-gold/40 transition-colors duration-500">
-                    {project.name}
-                  </span>
                 </div>
-                <figcaption className="mt-3 text-xs text-muted-foreground">{s.caption}</figcaption>
+                <figcaption className="px-6 py-5 text-sm text-muted-foreground">
+                  {s.caption}
+                </figcaption>
               </figure>
             ))}
           </div>

@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/SiteChrome";
+import { projects } from "@/lib/projects-data";
 
 export const Route = createFileRoute("/founders")({
   head: () => ({
@@ -62,6 +63,45 @@ function Founders() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Built so far — each row opens that project's page */}
+      <section className="max-w-[90rem] mx-auto px-6 md:px-12 pb-32">
+        <p className="text-[10px] tracking-[0.4em] uppercase text-gold mb-8">Built So Far</p>
+        <ul className="border-t border-border">
+          {projects.map((p, i) => (
+            <li key={p.slug}>
+              <Link
+                to="/projects/$slug"
+                params={{ slug: p.slug }}
+                className="group grid grid-cols-[auto_1fr_auto] items-center gap-6 md:gap-10 border-b border-border py-7 md:py-9 transition-colors hover:bg-gold/[0.04]"
+              >
+                <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="min-w-0">
+                  <span className="font-serif text-2xl md:text-4xl text-foreground group-hover:text-gold transition-colors">
+                    {p.name}
+                  </span>
+                  <span className="block mt-1 text-sm text-muted-foreground truncate">
+                    {p.shortDescription}
+                  </span>
+                </span>
+                <span className="flex items-center gap-6">
+                  <span className="hidden md:inline text-[10px] tracking-[0.3em] uppercase text-muted-foreground whitespace-nowrap">
+                    {p.tag}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="text-gold opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500"
+                  >
+                    →
+                  </span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
     </PageShell>
   );

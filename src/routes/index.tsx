@@ -57,8 +57,11 @@ function Home() {
       frame = requestAnimationFrame(() => {
         frame = 0;
         const h = window.innerHeight || 1;
-        const level = Math.min(Math.max(1 - window.scrollY / (h * 0.85), 0), 1);
-        setStormLevel(level);
+        // fully calm by the time the hero is ~65% scrolled away, so the storm
+        // is completely gone — not merely dimmed — over the content below
+        const raw = 1 - window.scrollY / (h * 0.65);
+        const level = Math.min(Math.max(raw, 0), 1);
+        setStormLevel(level < 0.04 ? 0 : level);
 
         const v = videoRef.current;
         if (!v) return;

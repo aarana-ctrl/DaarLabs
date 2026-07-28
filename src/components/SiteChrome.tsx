@@ -141,16 +141,17 @@ export function Footer() {
 export function PageShell({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-screen bg-background text-foreground">
-      {/* Persistent top-left gold shine, matching the home page */}
+      {/* Persistent top-left gold shine, matching the home page.
+          The storm belongs to the home hero — inner pages stay calm, so no
+          LightningLayer here. */}
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-30"
         style={{
           background:
-            "radial-gradient(ellipse 900px 700px at 12% 8%, oklch(0.78 0.13 82 / 0.16), transparent 70%)",
+            "radial-gradient(ellipse 900px 700px at 12% 8%, oklch(0.84 0.13 82 / 0.16), transparent 70%)",
         }}
       />
-      <LightningLayer />
       <Nav />
       <main className="pt-28">{children}</main>
       <Footer />

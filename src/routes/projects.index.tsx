@@ -3,7 +3,7 @@ import { PageShell } from "@/components/SiteChrome";
 import { ProjectCard } from "@/components/ProjectCard";
 import { projects } from "@/lib/projects-data";
 
-export const Route = createFileRoute("/projects")({
+export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
       { title: "Projects — DaarLabs" },

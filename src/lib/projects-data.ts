@@ -9,7 +9,8 @@ export type Project = {
   shortDescription: string;
   longDescription: string;
   highlights: string[];
-  screenshots: { caption: string }[];
+  /** `image` is a placeholder until real captures are dropped in. */
+  screenshots: { caption: string; image: string }[];
   /** Technology chips shown on the detail page. */
   stack: string[];
   url: string;
@@ -35,9 +36,9 @@ export const projects: Project[] = [
       "Design tokens shaped by physics, not by grids",
     ],
     screenshots: [
-      { caption: "Idle liquid state — settled surface" },
-      { caption: "Cursor interaction — displacement field" },
-      { caption: "Generative palette response" },
+      { caption: "Idle liquid state — settled surface", image: "https://picsum.photos/seed/liquid-0/1600/1000" },
+      { caption: "Cursor interaction — displacement field", image: "https://picsum.photos/seed/liquid-1/1600/1000" },
+      { caption: "Generative palette response", image: "https://picsum.photos/seed/liquid-2/1600/1000" },
     ],
     stack: ["React", "TypeScript", "WebGL", "Vite", "Tailwind"],
     liveUrl: "https://liquid-rouge.vercel.app",
@@ -60,9 +61,9 @@ export const projects: Project[] = [
       "Fare splitting and trust signals built in from day one",
     ],
     screenshots: [
-      { caption: "Home — nearby pool matches" },
-      { caption: "Route detail with fare split" },
-      { caption: "Trip in progress" },
+      { caption: "Home — nearby pool matches", image: "https://picsum.photos/seed/ridepool-0/1600/1000" },
+      { caption: "Route detail with fare split", image: "https://picsum.photos/seed/ridepool-1/1600/1000" },
+      { caption: "Trip in progress", image: "https://picsum.photos/seed/ridepool-2/1600/1000" },
     ],
     stack: ["SwiftUI", "iOS 17+", "Firestore", "MapKit"],
     url: "https://github.com/aarana-ctrl/RidePool",
@@ -84,9 +85,9 @@ export const projects: Project[] = [
       "Zero telemetry, no accounts, no cruft",
     ],
     screenshots: [
-      { caption: "Inbox — new tabs land here" },
-      { caption: "Swipe to archive or promote" },
-      { caption: "Focus mode" },
+      { caption: "Inbox — new tabs land here", image: "https://picsum.photos/seed/tabs-0/1600/1000" },
+      { caption: "Swipe to archive or promote", image: "https://picsum.photos/seed/tabs-1/1600/1000" },
+      { caption: "Focus mode", image: "https://picsum.photos/seed/tabs-2/1600/1000" },
     ],
     stack: ["React", "SwiftUI", "Firebase Realtime DB", "Vite", "Framer Motion"],
     liveUrl: "https://tabs-web.vercel.app",
@@ -109,9 +110,9 @@ export const projects: Project[] = [
       "Exports to plain text so your data stays yours",
     ],
     screenshots: [
-      { caption: "The list — nothing else" },
-      { caption: "Quick capture" },
-      { caption: "Weekly review" },
+      { caption: "The list — nothing else", image: "https://picsum.photos/seed/taskflow-0/1600/1000" },
+      { caption: "Quick capture", image: "https://picsum.photos/seed/taskflow-1/1600/1000" },
+      { caption: "Weekly review", image: "https://picsum.photos/seed/taskflow-2/1600/1000" },
     ],
     stack: ["React", "Firebase", "iCal Sync", "Vercel"],
     liveUrl: "https://taskflow-deploy-lilac.vercel.app",
