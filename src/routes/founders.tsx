@@ -1,14 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/SiteChrome";
+import { CONTACT_EMAIL } from "@/lib/contact-shared";
 import { projects } from "@/lib/projects-data";
 
 export const Route = createFileRoute("/founders")({
   head: () => ({
     meta: [
       { title: "Founders — DaarLabs" },
-      { name: "description", content: "Meet the founders of DaarLabs." },
+      { name: "description", content: "Aaditya Rana, founder of DaarLabs." },
       { property: "og:title", content: "Founders — DaarLabs" },
-      { property: "og:description", content: "Meet the founders of DaarLabs." },
+      { property: "og:description", content: "Aaditya Rana, founder of DaarLabs." },
     ],
   }),
   component: Founders,
@@ -26,17 +27,24 @@ function Founders() {
         <div className="grid lg:grid-cols-[minmax(18rem,1fr)_1.6fr] gap-12 lg:gap-20 items-start">
           <div className="relative">
             <div className="absolute -top-3 -left-3 w-20 h-20 border-t border-l border-gold/40" />
-            <div className="aspect-[4/5] w-full bg-gradient-to-br from-card to-muted rounded-sm relative overflow-hidden ring-1 ring-border">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,oklch(0.78_0.13_82/0.12),transparent_60%)]" />
-              <div className="absolute bottom-4 left-4 text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
-                Portrait / Placeholder
-              </div>
+            <div className="aspect-[4/5] w-full bg-card rounded-sm relative overflow-hidden ring-1 ring-border">
+              <img
+                src="/founders/aaditya-rana.jpg"
+                alt="Aaditya Rana"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              {/* keeps the portrait sitting in the site's palette rather than
+                  glowing against the dark page */}
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-[linear-gradient(to_top,oklch(0.14_0.01_260/0.45),transparent_55%)]"
+              />
             </div>
             <div className="absolute -bottom-3 -right-3 w-20 h-20 border-b border-r border-gold/40" />
           </div>
 
           <div>
-            <h2 className="font-serif text-3xl md:text-5xl mb-2">Founder Name</h2>
+            <h2 className="font-serif text-3xl md:text-5xl mb-2">Aaditya Rana</h2>
             <p className="text-[10px] tracking-[0.3em] uppercase text-gold mb-8">
               Founder &amp; Chief Visionary
             </p>
@@ -57,9 +65,28 @@ function Founders() {
               </p>
             </div>
             <div className="mt-12 flex gap-6 text-[10px] tracking-[0.3em] uppercase">
-              <a href="#" className="text-muted-foreground hover:text-gold transition-colors">LinkedIn</a>
-              <a href="#" className="text-muted-foreground hover:text-gold transition-colors">Twitter</a>
-              <a href="#" className="text-muted-foreground hover:text-gold transition-colors">Email</a>
+              <a
+                href="https://www.linkedin.com/in/aaditya-rana-37868722b/"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-muted-foreground hover:text-gold transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/aarana-ctrl"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-muted-foreground hover:text-gold transition-colors"
+              >
+                GitHub
+              </a>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="text-muted-foreground hover:text-gold transition-colors"
+              >
+                Email
+              </a>
             </div>
           </div>
         </div>

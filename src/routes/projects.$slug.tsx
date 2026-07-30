@@ -98,9 +98,9 @@ function ProjectDetail() {
         {/* ---------- Overview (sits above the lead image) ---------- */}
         <section className="mt-14 squircle border border-border bg-card/60 p-8 md:p-12 lg:p-16">
           <h2 className="font-serif text-3xl md:text-4xl mb-6">Project Overview</h2>
-          {/* Fills the card at every width; splits into two readable columns
-              once the card gets wide enough for long lines to be a problem. */}
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed w-full xl:columns-2 xl:gap-16">
+          {/* .overview-prose lives in styles.css — fills the card, and splits
+              into two rule-separated columns once there's room. */}
+          <p className="overview-prose text-base md:text-lg text-muted-foreground leading-relaxed">
             {project.longDescription}
           </p>
 
