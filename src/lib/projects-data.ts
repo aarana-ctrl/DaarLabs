@@ -10,7 +10,9 @@ export type Project = {
   longDescription: string;
   highlights: string[];
   /** `image` is a placeholder until real captures are dropped in. */
-  screenshots: { caption: string; image: string }[];
+  screenshots: Shot[];
+  /** Grouped feature write-up, rendered as sections on the detail page. */
+  features?: FeatureGroup[];
   /** Technology chips shown on the detail page. */
   stack: string[];
   /** Source repo. Omitted while a project is still private. */
@@ -20,7 +22,24 @@ export type Project = {
   year: string;
 };
 
-const shot = (slug: string, i: number, caption: string) => ({
+/** How a screenshot should be framed on the detail page. */
+export type ShotDevice = "desktop" | "mobile";
+export type ShotTheme = "light" | "dark";
+
+export type Shot = {
+  caption: string;
+  image: string;
+  device?: ShotDevice;
+  theme?: ShotTheme;
+};
+
+export type FeatureGroup = {
+  title: string;
+  blurb?: string;
+  items: string[];
+};
+
+const shot = (slug: string, i: number, caption: string): Shot => ({
   caption,
   image: `https://picsum.photos/seed/${slug}-${i}/1600/1000`,
 });
@@ -72,12 +91,132 @@ export const projects: Project[] = [
       "Admin controls: edit any entry retroactively, distribute a player's P&L, and manage a dispute fund",
       "Analytics rolled up across every table — cumulative P&L, win rate, best and worst sessions",
     ],
-    screenshots: [
-      shot("tabs", 0, "Table leaderboard — all-time P&L per player"),
-      shot("tabs", 1, "Live session with balance bar"),
-      shot("tabs", 2, "Player profile and session history"),
+    features: [
+      {
+        title: "Tables",
+        blurb:
+          "A table represents a recurring poker group. Each has a unique reference code that members use to join. One player is the Admin and can optionally designate Co-Admins.",
+        items: [
+          "Create a new table or join one with a reference code",
+          "Persistent leaderboard showing each member's all-time P&L",
+          "Admin and Co-Admin badges shown next to names on the leaderboard",
+          "Session history page (admin only) listing every session and each player's result",
+        ],
+      },
+      {
+        title: "Sessions",
+        blurb:
+          "A session is a single poker night, started and managed from the table page.",
+        items: [
+          "Players log their own buy-in and final chip amount at the end of the night",
+          "A live balance bar shows the total net, which must reach $0 before settlement",
+          "Admin can edit any submitted entry at any time, including retroactively",
+          "Guests can be added to a session with just a name and net P&L",
+        ],
+      },
+      {
+        title: "Guests",
+        blurb:
+          "Guests are one-off players without accounts. Their results count toward the session balance but stay off the main leaderboard.",
+        items: [
+          "Added to any session with a name and net P&L",
+          "Results included in the session balance calculation",
+          "All-time P&L tracked and shown in the table's Guests section",
+        ],
+      },
+      {
+        title: "Settlements",
+        blurb: "When a session ends, the admin initiates settlement mode.",
+        items: [
+          "Each player marks themselves settled once cash has changed hands",
+          "The admin closes the session once every player is settled",
+        ],
+      },
+      {
+        title: "Player Profiles",
+        blurb: "Tapping any player opens their full record.",
+        items: [
+          "Total earnings broken down as Session Total plus Distributed",
+          "Session-by-session history with net P&L for each night",
+          "Win rate alongside best and worst session stats",
+        ],
+      },
+      {
+        title: "Admin Controls",
+        blurb: "Admins get a dedicated panel with elevated abilities.",
+        items: [
+          "Edit any session entry — correct a buy-in or final amount after the fact",
+          "Distribute a player's P&L — zero their balance and split it evenly among the rest",
+          "Remove a player — split their balance among the others or move it to the dispute fund",
+          "Dispute fund — a running pool from removed players or contested amounts, splittable or clearable",
+          "Session history — every session newest-first, with inline editing of any entry",
+        ],
+      },
+      {
+        title: "Analytics",
+        blurb:
+          "Personal stats rolled up across every table a player belongs to.",
+        items: [
+          "Cumulative P&L chart with a per-session toggle",
+          "Win rate plus best and worst session",
+          "Per-table breakdown of earnings, win rate, and best night",
+        ],
+      },
     ],
-    stack: ["SwiftUI", "React 18", "TypeScript", "Vite", "Tailwind CSS", "Firebase"],
+    screenshots: [
+      {
+        caption: "Analytics — cumulative P&L across every table",
+        image: "/projects/tabs/analytics-dark.png",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Table page — leaderboard, dispute fund, and guests",
+        image: "/projects/tabs/table-dark.png",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Player profile with the full admin action panel",
+        image: "/projects/tabs/player-dark.png",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Dispute fund — split evenly among current players or clear it",
+        image: "/projects/tabs/dispute-dark.png",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Analytics in light mode",
+        image: "/projects/tabs/analytics-light.png",
+        device: "desktop",
+        theme: "light",
+      },
+      {
+        caption: "Table leaderboard in light mode",
+        image: "/projects/tabs/table-light.png",
+        device: "desktop",
+        theme: "light",
+      },
+      {
+        caption: "Live session — balance off by $0.05",
+        image: "/projects/tabs/mobile-session.png",
+        device: "mobile",
+      },
+      {
+        caption: "Table players and all-time standings",
+        image: "/projects/tabs/mobile-table.png",
+        device: "mobile",
+      },
+      {
+        caption: "My Analytics on iOS",
+        image: "/projects/tabs/mobile-analytics.png",
+        device: "mobile",
+      },
+    ],
+    stack: ["SwiftUI", "React 18", "TypeScript", "Vite", "Tailwind CSS", "Firebase", "Recharts"],
     url: "https://github.com/aarana-ctrl/Tabs",
     liveUrl: "https://tabs-web.vercel.app",
     year: "2026",

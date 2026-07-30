@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageShell } from "@/components/SiteChrome";
-import { getProject, projects, type Project } from "@/lib/projects-data";
+import { BrowserFrame, PhoneFrame } from "@/components/DeviceFrame";
+import { getProject, projects, type Project, type Shot } from "@/lib/projects-data";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
@@ -28,6 +29,12 @@ function ProjectDetail() {
   const { project } = Route.useLoaderData() as { project: Project };
   const idx = projects.findIndex((p) => p.slug === project.slug);
   const next = projects[(idx + 1) % projects.length];
+
+  const shots = project.screenshots ?? [];
+  const desktopDark = shots.filter((s) => s.device !== "mobile" && s.theme !== "light");
+  const desktopLight = shots.filter((s) => s.device !== "mobile" && s.theme === "light");
+  const mobile = shots.filter((s) => s.device === "mobile");
+  const isPlaceholder = shots.some((s) => s.image.includes("picsum.photos"));
 
   return (
     <PageShell>
@@ -80,9 +87,25 @@ function ProjectDetail() {
           </div>
         </header>
 
+        {/* ---------- Lead image ---------- */}
+        {desktopDark[0] && (
+          <figure className="mt-14">
+            <BrowserFrame tone="dark">
+              <img
+                src={desktopDark[0].image}
+                alt={desktopDark[0].caption}
+                className="block w-full"
+              />
+            </BrowserFrame>
+            <figcaption className="mt-3 text-xs text-muted-foreground">
+              {desktopDark[0].caption}
+            </figcaption>
+          </figure>
+        )}
+
         <div className="mt-14 border-t border-border" />
 
-        {/* ---------- Overview card ---------- */}
+        {/* ---------- Overview ---------- */}
         <section className="mt-14 squircle border border-border bg-card/60 p-8 md:p-12 lg:p-16">
           <h2 className="font-serif text-3xl md:text-4xl mb-6">Project Overview</h2>
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[75ch]">
@@ -116,42 +139,86 @@ function ProjectDetail() {
           </ul>
         </section>
 
-        {/* ---------- Gallery (placeholder imagery until real captures land) ---------- */}
-        <section className="mt-20">
-          <div className="flex items-baseline justify-between gap-6 mb-8">
-            <h2 className="font-serif text-3xl md:text-4xl">Gallery</h2>
-            <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
-              Placeholder imagery
-            </span>
-          </div>
+        {/* ---------- Features ---------- */}
+        {project.features && project.features.length > 0 && (
+          <section className="mt-24">
+            <p className="text-[10px] tracking-[0.4em] uppercase text-gold mb-6">Features</p>
+            <h2 className="font-serif text-3xl md:text-5xl mb-12">What it does</h2>
 
-          <div className="space-y-8">
-            {project.screenshots.map((s, i) => (
-              <figure
-                key={i}
-                className="group squircle border border-border bg-card/50 overflow-hidden transition-colors duration-500 hover:border-gold/40"
-              >
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
-                  <img
-                    src={s.image}
-                    alt={s.caption}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                  />
-                  <span className="absolute top-4 left-4 text-[10px] tracking-[0.3em] uppercase text-white/70 mix-blend-difference">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+            <div className="grid gap-x-16 gap-y-14 lg:grid-cols-2">
+              {project.features.map((group) => (
+                <div key={group.title} className="border-t border-border pt-8">
+                  <h3 className="font-serif text-2xl md:text-3xl text-foreground mb-3">
+                    {group.title}
+                  </h3>
+                  {group.blurb && (
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-[60ch] mb-6">
+                      {group.blurb}
+                    </p>
+                  )}
+                  <ul className="space-y-3">
+                    {group.items.map((item) => (
+                      <li
+                        key={item}
+                        className="flex gap-3 text-sm text-muted-foreground leading-relaxed"
+                      >
+                        <span aria-hidden className="text-gold/70 shrink-0 mt-0.5">
+                          ·
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <figcaption className="px-6 py-5 text-sm text-muted-foreground">
-                  {s.caption}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ---------- Gallery ---------- */}
+        {shots.length > 0 && (
+          <section className="mt-24">
+            <div className="flex items-baseline justify-between gap-6 mb-10">
+              <div>
+                <p className="text-[10px] tracking-[0.4em] uppercase text-gold mb-4">Gallery</p>
+                <h2 className="font-serif text-3xl md:text-5xl">A look inside</h2>
+              </div>
+              {isPlaceholder && (
+                <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
+                  Placeholder imagery
+                </span>
+              )}
+            </div>
+
+            {desktopDark.length > 1 && (
+              <DesktopGroup label="Web — Dark" shots={desktopDark.slice(1)} tone="dark" />
+            )}
+            {desktopLight.length > 0 && (
+              <DesktopGroup label="Web — Light" shots={desktopLight} tone="light" />
+            )}
+
+            {mobile.length > 0 && (
+              <div className="mt-16">
+                <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-8">
+                  iOS — iPhone 16 Pro
+                </p>
+                <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+                  {mobile.map((s) => (
+                    <figure key={s.image}>
+                      <PhoneFrame src={s.image} alt={s.caption} />
+                      <figcaption className="mt-5 text-center text-xs text-muted-foreground">
+                        {s.caption}
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* ---------- Meta + next ---------- */}
-        <section className="mt-20 pt-10 border-t border-border grid gap-10 sm:grid-cols-3">
+        <section className="mt-24 pt-10 border-t border-border grid gap-10 sm:grid-cols-3">
           <div>
             <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-2">
               Discipline
@@ -189,5 +256,36 @@ function ProjectDetail() {
         </section>
       </article>
     </PageShell>
+  );
+}
+
+function DesktopGroup({
+  label,
+  shots,
+  tone,
+}: {
+  label: string;
+  shots: Shot[];
+  tone: "light" | "dark";
+}) {
+  return (
+    <div className="mt-14 first:mt-0">
+      <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-8">{label}</p>
+      <div className="grid gap-10 lg:grid-cols-2">
+        {shots.map((s) => (
+          <figure key={s.image} className="group">
+            <BrowserFrame tone={tone}>
+              <img
+                src={s.image}
+                alt={s.caption}
+                loading="lazy"
+                className="block w-full transition-transform duration-700 group-hover:scale-[1.01]"
+              />
+            </BrowserFrame>
+            <figcaption className="mt-3 text-xs text-muted-foreground">{s.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
   );
 }

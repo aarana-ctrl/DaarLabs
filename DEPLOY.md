@@ -51,11 +51,20 @@ git add .gitattributes
 
 1. Go to <https://vercel.com/new> and sign in with GitHub
 2. **Import** the `daarlabs-web` repository
-3. Vercel auto-detects the settings — confirm they read:
-   - Framework Preset: **Vite**
-   - Build Command: `npm run build`
-   - Install Command: `npm install`
-   - Output Directory: leave as detected
+3. Set the project settings to:
+
+   | Setting | Value |
+   |---|---|
+   | Framework Preset | **Other** |
+   | Build Command | `npm run build` |
+   | Install Command | `npm install` |
+   | Output Directory | **leave empty** |
+   | Node.js Version | 22.x (default) |
+
+   Do **not** pick the "Vite" preset. It forces the output directory to `dist`,
+   which this project never produces. During the build Nitro detects Vercel and
+   writes `.vercel/output` (Build Output API v3) — static files, the SSR function,
+   and the routing config — which Vercel picks up automatically.
 4. Add the contact-form environment variables (Settings → Environment Variables):
 
    | Name | Value |
@@ -92,13 +101,16 @@ HTTPS is provisioned automatically once DNS resolves.
 
 ## Build details
 
-`npm run build` regenerates the Tailwind safelist, then produces a Nitro bundle:
+`npm run build` regenerates the Tailwind safelist, then produces a Nitro bundle.
+The layout depends on where it runs:
 
-- `.output/public` — static assets (JS, CSS, video, favicon)
-- `.output/server` — the SSR handler
+- **Locally** → `.output/public` (static assets) and `.output/server` (SSR handler)
+- **On Vercel** (`VERCEL=1` is set during the build) → `.vercel/output` containing
+  `static/`, `functions/__server.func/`, and `config.json`
 
-Nitro auto-detects Vercel from its environment, so no preset configuration is required.
-To pin it explicitly, set `nitro: { preset: "vercel" }` in `vite.config.ts`.
+No `vercel.json` is needed — the generated `config.json` already caches `/assets/*`
+immutably, serves static files first, and routes everything else to the SSR function.
+To pin the target from your own CI, set `nitro: { preset: "vercel" }` in `vite.config.ts`.
 
 ## Pre-deploy checklist
 

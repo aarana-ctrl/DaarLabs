@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { PageShell } from "@/components/SiteChrome";
-import { sendMessage, CONTACT_EMAIL, type ContactResult } from "@/lib/send-message";
+import { sendMessage } from "@/lib/send-message";
+import { CONTACT_EMAIL, type ContactResult } from "@/lib/contact-shared";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({

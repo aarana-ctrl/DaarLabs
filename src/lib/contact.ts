@@ -1,72 +1,90 @@
 /**
- * Contact-form delivery. Kept free of framework imports so it can be reasoned
- * about — and tested — on its own; `send-message.ts` is the thin server-fn
- * wrapper that calls into this.
+ * Server-side contact delivery. Only ever imported from the server function,
+ * so it may touch Node APIs — the client bundle gets `contact-shared.ts`.
  */
+import {
+  CONTACT_EMAIL,
+  escapeHtml,
+  validateContact,
+  type ContactPayload,
+  type ContactResult,
+} from "./contact-shared";
 
-/** Every message from the contact form lands here. */
-export const CONTACT_EMAIL = "Labs.daar@gmail.com";
+export { CONTACT_EMAIL, validateContact };
+export type { ContactPayload, ContactResult };
 
-export type ContactPayload = {
-  name: string;
-  email: string;
-  message: string;
-  /** Honeypot — real people never fill this in. */
-  company?: string;
-};
+type Env = Record<string, string | undefined>;
 
-export type ContactResult = { ok: true } | { ok: false; error: string };
+let envCache: Env | null = null;
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/**
+ * Reads a server-side variable.
+ *
+ * `process.env` is the source of truth (that's what Vercel populates). In local
+ * dev, Vite does not put `.env` values there, and depending on how the SSR
+ * runtime is isolated, injecting them from vite.config isn't always visible
+ * here — so fall back to parsing `.env` off disk once, and cache it.
+ */
+function readEnv(key: string): string | undefined {
+  const fromProcess = typeof process !== "undefined" ? process.env?.[key] : undefined;
+  if (fromProcess) return fromProcess;
 
-/** Returns an error message, or null when the payload is good. */
-export function validateContact(input: ContactPayload): string | null {
-  if (input.company) return "Rejected."; // bot tripped the honeypot
-  if (!input.name?.trim()) return "Please add your name.";
-  if (!EMAIL_RE.test(input.email?.trim() ?? "")) return "That email address doesn't look right.";
-  if (!input.message?.trim()) return "Please add a message.";
-  if (input.message.length > 5000) return "That message is a little too long.";
-  return null;
+  if (envCache === null) {
+    envCache = {};
+    try {
+      // Node-only, and deliberately dynamic so bundlers don't hoist it.
+      const req = eval("require") as NodeRequire;
+      const { readFileSync } = req("node:fs") as typeof import("node:fs");
+      const { resolve } = req("node:path") as typeof import("node:path");
+      const raw = readFileSync(resolve(process.cwd(), ".env"), "utf8");
+      for (const line of raw.split("\n")) {
+        const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
+        if (!m) continue;
+        let value = m[2].trim();
+        // strip matching surrounding quotes
+        if (
+          (value.startsWith('"') && value.endsWith('"')) ||
+          (value.startsWith("'") && value.endsWith("'"))
+        ) {
+          value = value.slice(1, -1);
+        }
+        envCache[m[1]] = value;
+      }
+    } catch {
+      /* no .env on disk — normal in production */
+    }
+  }
+  return envCache[key];
 }
-
-export function escapeHtml(s: string) {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-type Env = { RESEND_API_KEY?: string; CONTACT_FROM?: string };
 
 /**
  * Validates and forwards a message to CONTACT_EMAIL through Resend.
  *
- * Requires two environment variables:
+ * Configuration:
  *   RESEND_API_KEY  — from https://resend.com (the free tier is plenty)
  *   CONTACT_FROM    — a verified sender, e.g. "DaarLabs <hello@daarlabs.com>",
  *                     or "onboarding@resend.dev" while testing
- *
- * Without them it fails loudly rather than silently dropping mail, so a
- * misconfigured deploy is obvious instead of quietly losing messages.
  *
  * `fetchImpl` and `env` are injectable purely so this can be tested.
  */
 export async function deliverMessage(
   data: ContactPayload,
   fetchImpl: typeof fetch = fetch,
-  env: Env = process.env as Env,
+  env?: Env,
 ): Promise<ContactResult> {
   const problem = validateContact(data);
   if (problem) return { ok: false, error: problem };
 
-  const apiKey = env.RESEND_API_KEY;
-  const from = env.CONTACT_FROM ?? "DaarLabs <onboarding@resend.dev>";
+  const apiKey = env ? env.RESEND_API_KEY : readEnv("RESEND_API_KEY");
+  const from =
+    (env ? env.CONTACT_FROM : readEnv("CONTACT_FROM")) ?? "DaarLabs <onboarding@resend.dev>";
 
   if (!apiKey) {
-    console.error("[contact] RESEND_API_KEY is not set — message not delivered", {
-      from: data.email,
-    });
+    console.error(
+      "[contact] RESEND_API_KEY is not set — message NOT delivered.\n" +
+        "  Local dev: add it to .env in the project root and restart the dev server.\n" +
+        "  Vercel:    add it under Settings → Environment Variables, then redeploy.",
+    );
     return {
       ok: false,
       error: "Email isn't configured on the server yet. Please write to us directly.",
@@ -99,7 +117,12 @@ export async function deliverMessage(
     if (!res.ok) {
       const detail = await res.text();
       console.error("[contact] Resend rejected the message", res.status, detail);
-      return { ok: false, error: "We couldn't send that just now. Please try again shortly." };
+      // surface the real reason — a bad key or unverified sender is fixable
+      const hint =
+        res.status === 401 || res.status === 403
+          ? "The email API key was rejected. Check RESEND_API_KEY."
+          : "We couldn't send that just now. Please try again shortly.";
+      return { ok: false, error: hint };
     }
 
     return { ok: true };
