@@ -151,34 +151,31 @@ export const projects: Project[] = [
     ],
     screenshots: [
       {
-        caption: "Plan board — drag courses across quarters, in the Goa theme",
+        caption: "Plan board — drag courses across quarters · Goa Beaches theme",
         image: "/projects/liquid/plan-timeline-goa.jpg",
         device: "desktop",
-        theme: "dark",
       },
       {
-        caption: "Degree requirements — per-category progress with recommended courses",
+        caption:
+          "Degree requirements — per-category progress with recommended courses · Goa Beaches theme",
         image: "/projects/liquid/requirements-goa.jpg",
         device: "desktop",
-        theme: "dark",
       },
       {
-        caption: "Design your path — 323 majors and 185 minors, compared side by side",
+        caption:
+          "Design your path — 323 majors and 185 minors, compared side by side · Goa Beaches theme",
         image: "/projects/liquid/majors-minors.jpg",
         device: "desktop",
-        theme: "dark",
       },
       {
-        caption: "Appearance — seven live video themes, blur, and background dim",
+        caption: "Appearance — seven live video themes, blur, and background dim · Tahoe theme",
         image: "/projects/liquid/appearance-themes.jpg",
         device: "desktop",
-        theme: "dark",
       },
       {
         caption: "The same plan board in the Tea Gardens theme",
         image: "/projects/liquid/plan-timeline-tea.jpg",
         device: "desktop",
-        theme: "light",
       },
     ],
     thumbnail: "/projects/liquid/plan-timeline-tea.jpg",

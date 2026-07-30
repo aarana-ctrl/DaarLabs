@@ -31,8 +31,14 @@ function ProjectDetail() {
   const next = projects[(idx + 1) % projects.length];
 
   const shots = project.screenshots ?? [];
-  const desktopDark = shots.filter((s) => s.device !== "mobile" && s.theme !== "light");
-  const desktopLight = shots.filter((s) => s.device !== "mobile" && s.theme === "light");
+  const desktop = shots.filter((s) => s.device !== "mobile");
+  /* Some projects ship light and dark builds; others are themed instead, and
+     get one unlabelled grid. */
+  const themed = desktop.some((s) => s.theme);
+  const lead = desktop[0];
+  const rest = desktop.slice(1);
+  const desktopDark = rest.filter((s) => s.theme !== "light");
+  const desktopLight = rest.filter((s) => s.theme === "light");
   const mobile = shots.filter((s) => s.device === "mobile");
   const isPlaceholder = shots.some((s) => s.image.includes("picsum.photos"));
 
@@ -92,7 +98,9 @@ function ProjectDetail() {
         {/* ---------- Overview (sits above the lead image) ---------- */}
         <section className="mt-14 squircle border border-border bg-card/60 p-8 md:p-12 lg:p-16">
           <h2 className="font-serif text-3xl md:text-4xl mb-6">Project Overview</h2>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[75ch]">
+          {/* Fills the card at every width; splits into two readable columns
+              once the card gets wide enough for long lines to be a problem. */}
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed w-full xl:columns-2 xl:gap-16">
             {project.longDescription}
           </p>
 
@@ -124,18 +132,12 @@ function ProjectDetail() {
         </section>
 
         {/* ---------- Lead image (after the overview) ---------- */}
-        {desktopDark[0] && (
+        {lead && (
           <figure className="mt-20">
-            <BrowserFrame tone="dark">
-              <img
-                src={desktopDark[0].image}
-                alt={desktopDark[0].caption}
-                className="block w-full"
-              />
+            <BrowserFrame tone={lead.theme === "light" ? "light" : "dark"}>
+              <img src={lead.image} alt={lead.caption} className="block w-full" />
             </BrowserFrame>
-            <figcaption className="mt-3 text-xs text-muted-foreground">
-              {desktopDark[0].caption}
-            </figcaption>
+            <figcaption className="mt-3 text-xs text-muted-foreground">{lead.caption}</figcaption>
           </figure>
         )}
 
@@ -190,11 +192,17 @@ function ProjectDetail() {
               )}
             </div>
 
-            {desktopDark.length > 1 && (
-              <DesktopGroup label="Web — Dark" shots={desktopDark.slice(1)} tone="dark" />
-            )}
-            {desktopLight.length > 0 && (
-              <DesktopGroup label="Web — Light" shots={desktopLight} tone="light" />
+            {themed ? (
+              <>
+                {desktopDark.length > 0 && (
+                  <DesktopGroup label="Web — Dark" shots={desktopDark} tone="dark" />
+                )}
+                {desktopLight.length > 0 && (
+                  <DesktopGroup label="Web — Light" shots={desktopLight} tone="light" />
+                )}
+              </>
+            ) : (
+              rest.length > 0 && <DesktopGroup shots={rest} tone="dark" />
             )}
 
             {mobile.length > 0 && (
@@ -284,14 +292,16 @@ function DesktopGroup({
   shots,
   tone,
 }: {
-  label: string;
+  label?: string;
   shots: Shot[];
   tone: "light" | "dark";
 }) {
   return (
     <div className="mt-14 first:mt-0">
-      <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-8">{label}</p>
-      <div className="grid gap-10 lg:grid-cols-2">
+      {label && (
+        <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-8">{label}</p>
+      )}
+      <div className="grid gap-10 md:grid-cols-2">
         {shots.map((s) => (
           <figure key={s.image} className="group">
             <BrowserFrame tone={tone}>
