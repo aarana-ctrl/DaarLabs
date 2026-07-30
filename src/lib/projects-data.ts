@@ -13,6 +13,10 @@ export type Project = {
   screenshots: Shot[];
   /** Grouped feature write-up, rendered as sections on the detail page. */
   features?: FeatureGroup[];
+  /** Card thumbnail. A light-toned image reads best against the dark cards. */
+  thumbnail?: string;
+  /** Shown under the gallery when captures have redactions. */
+  imageNote?: string;
   /** Technology chips shown on the detail page. */
   stack: string[];
   /** Source repo. Omitted while a project is still private. */
@@ -216,6 +220,9 @@ export const projects: Project[] = [
         device: "mobile",
       },
     ],
+    thumbnail: "/projects/tabs/table-light.png",
+    imageNote:
+      "Player names, table names, and reference codes have been redacted in these captures for privacy.",
     stack: ["SwiftUI", "React 18", "TypeScript", "Vite", "Tailwind CSS", "Firebase", "Recharts"],
     url: "https://github.com/aarana-ctrl/Tabs",
     liveUrl: "https://tabs-web.vercel.app",

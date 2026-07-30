@@ -87,25 +87,9 @@ function ProjectDetail() {
           </div>
         </header>
 
-        {/* ---------- Lead image ---------- */}
-        {desktopDark[0] && (
-          <figure className="mt-14">
-            <BrowserFrame tone="dark">
-              <img
-                src={desktopDark[0].image}
-                alt={desktopDark[0].caption}
-                className="block w-full"
-              />
-            </BrowserFrame>
-            <figcaption className="mt-3 text-xs text-muted-foreground">
-              {desktopDark[0].caption}
-            </figcaption>
-          </figure>
-        )}
-
         <div className="mt-14 border-t border-border" />
 
-        {/* ---------- Overview ---------- */}
+        {/* ---------- Overview (sits above the lead image) ---------- */}
         <section className="mt-14 squircle border border-border bg-card/60 p-8 md:p-12 lg:p-16">
           <h2 className="font-serif text-3xl md:text-4xl mb-6">Project Overview</h2>
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-[75ch]">
@@ -138,6 +122,22 @@ function ProjectDetail() {
             ))}
           </ul>
         </section>
+
+        {/* ---------- Lead image (after the overview) ---------- */}
+        {desktopDark[0] && (
+          <figure className="mt-20">
+            <BrowserFrame tone="dark">
+              <img
+                src={desktopDark[0].image}
+                alt={desktopDark[0].caption}
+                className="block w-full"
+              />
+            </BrowserFrame>
+            <figcaption className="mt-3 text-xs text-muted-foreground">
+              {desktopDark[0].caption}
+            </figcaption>
+          </figure>
+        )}
 
         {/* ---------- Features ---------- */}
         {project.features && project.features.length > 0 && (
@@ -213,6 +213,15 @@ function ProjectDetail() {
                   ))}
                 </div>
               </div>
+            )}
+
+            {project.imageNote && (
+              <p className="mt-12 flex items-start gap-2 text-xs text-muted-foreground/80 italic">
+                <span aria-hidden className="not-italic">
+                  ✳
+                </span>
+                <span>{project.imageNote}</span>
+              </p>
             )}
           </section>
         )}
