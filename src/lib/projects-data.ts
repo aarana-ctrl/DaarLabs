@@ -58,16 +58,16 @@ export const projects: Project[] = [
     category: "Web",
     note: "Open source",
     shortDescription:
-      "A degree and quarter planner for University of Washington students, powered by real MyPlan, DARS, DawgPath, and RateMyProfessors data.",
+      "Because planning your degree shouldn't be four different windows and twelve tabs — a degree and quarter planner for University of Washington students, powered by real MyPlan, DARS, DawgPath, and RateMyProfessors data.",
     longDescription:
-      "UW students juggle a lot of tabs to plan a schedule: MyPlan to build one, DARS to audit degree progress, DawgPath for grade distributions, and RateMyProfessors to size up instructors. Liquid pulls all of it into a single planning surface and keeps the numbers exact by reading the student's own signed-in university data through a companion Chrome extension, so nothing is guessed. A recommendation model then ranks courses by how much of what you still need each one covers.",
+      "Planning your degree shouldn't be four different windows with twelve tabs. UW students juggle MyPlan to build a schedule, DARS to audit degree progress, DawgPath for grade distributions, and RateMyProfessors to size up instructors. Liquid pulls all of it into a single planning surface and keeps the numbers exact by reading the student's own signed-in university data through a companion Chrome extension, so nothing is guessed. A recommendation model then ranks courses by how much of what you still need each one covers — all of it wrapped in a calm liquid-glass interface with live video wallpaper themes that shift with the time of day.",
     highlights: [
       "DARS audits imported automatically and rendered as a live progress card with every unmet requirement",
       "Compare majors and minors side by side with exact per-category requirements, tagged Major / Minor / Both",
       "Gen-ed picker ranks courses by how much of your remaining requirements each one satisfies",
       "Course details with DawgPath grade distributions, live professor ratings, and open-seat counts",
       "Drag-and-drop plan board that respects the UW calendar, with prerequisite awareness and clash detection",
-      "Seven wallpaper themes with live video backgrounds and adjustable liquid-glass blur",
+      "Seven video wallpaper themes — Tahoe, Goa, Sequoia, Tea Gardens, Golden Gate, Ganges — that shift with the time of day, with adjustable liquid-glass blur, background dim, and a live/still switch to save battery",
     ],
     screenshots: [
       shot("liquid", 0, "Plan board — drag courses across quarters"),
@@ -334,7 +334,7 @@ export const projects: Project[] = [
     mobileStatus:
       "Screenshots of the mobile app aren't available yet — it's still under development.",
     stack: ["React", "Firebase Auth", "Firestore", "Vercel Functions", "iCal"],
-    url: "https://github.com/aarana-ctrl/taskFlow",
+    url: "https://github.com/aarana-ctrl/TaskFlow",
     liveUrl: "https://taskflow-deploy-lilac.vercel.app",
     year: "2026",
   },
