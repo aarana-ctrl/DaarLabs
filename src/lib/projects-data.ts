@@ -69,11 +69,121 @@ export const projects: Project[] = [
       "Drag-and-drop plan board that respects the UW calendar, with prerequisite awareness and clash detection",
       "Seven video wallpaper themes — Tahoe, Goa, Sequoia, Tea Gardens, Golden Gate, Ganges — that shift with the time of day, with adjustable liquid-glass blur, background dim, and a live/still switch to save battery",
     ],
-    screenshots: [
-      shot("liquid", 0, "Plan board — drag courses across quarters"),
-      shot("liquid", 1, "Degree audit — live progress and unmet requirements"),
-      shot("liquid", 2, "Course detail — grade distribution and live seats"),
+    features: [
+      {
+        title: "Degree Audit That's Actually Exact",
+        blurb:
+          "Your DARS audit is imported automatically and rendered as a live progress card plus a full per-requirement breakdown — no re-typing, no guessing.",
+        items: [
+          "Earned / in-progress / remaining credits, GPA, and on-track status at a glance",
+          "Every unmet requirement listed with the specific courses that satisfy it",
+          "Re-sync MyPlan (DARS) in one click to refresh the whole audit",
+          "Requirement cards mark themselves met as planned courses fill them",
+        ],
+      },
+      {
+        title: "Compare Majors & Minors",
+        blurb:
+          "Line up any programs side by side and see every requirement, so you can weigh a switch or an added minor before committing to it.",
+        items: [
+          "323 majors and 185 minors, searchable, with double-counting allowed",
+          "Programs you've run through DARS are marked ✓ exact with real per-category numbers and named required courses",
+          "Everything else shows as a transcript estimate until its audit runs",
+          "Auto-run DARS across a whole batch of saved programs in the background",
+          "With a minor added, requirements are tagged Major / Minor / Both so you always know what counts for what",
+        ],
+      },
+      {
+        title: "Recommendations Built Around What You Still Need",
+        blurb:
+          "The gen-ed picker ranks courses by how much of your remaining requirements each one covers — a course that fills three open areas beats one that double-counts areas you've already finished.",
+        items: [
+          "Full-screen picker, searchable and filterable by area and credits",
+          "Auto Plan drops recommended courses straight onto the board",
+          "Ranking updates the moment your audit or plan changes",
+        ],
+      },
+      {
+        title: "Course Details With Real Data",
+        blurb:
+          "Open any course and everything you'd normally open four tabs for is already there.",
+        items: [
+          "DawgPath grade distribution — tap a bar for the exact % who earned each grade",
+          "Professor ratings pulled live from RateMyProfessors",
+          "Every lecture and quiz section for the current and next quarter, with meeting times and live open-seat counts",
+          "Clash detection so you never plan two classes at the same time",
+        ],
+      },
+      {
+        title: "A Plan Board That Respects the UW Calendar",
+        blurb:
+          "Timeline and grid views over every quarter of your degree, from pre-credits to years out.",
+        items: [
+          "Drag and drop courses across quarters with prerequisite awareness",
+          "Correct academic-year labeling (Summer → Spring)",
+          "Per-quarter credit totals, completed-quarter states, and a this-quarter widget",
+          "Smart add for typing courses in quickly, plus Reset to start over",
+        ],
+      },
+      {
+        title: "Make It Yours",
+        blurb:
+          "Liquid is a liquid-glass interface layered over live video wallpaper — the theme sets the mood of the whole app.",
+        items: [
+          "Seven themes: Tahoe, Goa Beaches, Goa Coast, Sequoia, Tea Gardens, Ganges, and Golden Gate",
+          "Live video backgrounds that shift with the time of day, marked Live in the picker",
+          "Adjustable liquid-glass blur and background dim, with reset to defaults",
+          "Live/still switch to save battery, plus widget toggles",
+        ],
+      },
+      {
+        title: "How It Works",
+        blurb:
+          "Three pieces: a React web app, an Express + Firestore backend, and a Chrome MV3 extension that reads the student's own signed-in UW session.",
+        items: [
+          "The web app is the interface only — it never touches university systems directly",
+          "The extension reads the DARS audit, scrapes the program and course catalog, and fetches per-course grades, professors, sections, and seats",
+          "The backend stores each user's plan and per-program DARS snapshots and serves the shared course catalog",
+          "An auto-audit queue on the backend is drained by the extension in the background",
+          "No NetID, password, or 2FA is ever requested, and no university request signatures are forged",
+        ],
+      },
     ],
+    screenshots: [
+      {
+        caption: "Plan board — drag courses across quarters, in the Goa theme",
+        image: "/projects/liquid/plan-timeline-goa.jpg",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Degree requirements — per-category progress with recommended courses",
+        image: "/projects/liquid/requirements-goa.jpg",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Design your path — 323 majors and 185 minors, compared side by side",
+        image: "/projects/liquid/majors-minors.jpg",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Appearance — seven live video themes, blur, and background dim",
+        image: "/projects/liquid/appearance-themes.jpg",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "The same plan board in the Tea Gardens theme",
+        image: "/projects/liquid/plan-timeline-tea.jpg",
+        device: "desktop",
+        theme: "light",
+      },
+    ],
+    thumbnail: "/projects/liquid/plan-timeline-tea.jpg",
+    mobileStatus:
+      "Liquid is built for the desktop web — planning a degree needs the room — so there's no mobile app for this one.",
     stack: ["React 18", "Vite", "Node.js", "Express", "Firestore", "Chrome MV3", "JWT"],
     url: "https://github.com/aarana-ctrl/Liquid",
     liveUrl: "https://liquid-rouge.vercel.app",
