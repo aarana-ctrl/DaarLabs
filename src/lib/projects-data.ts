@@ -464,10 +464,38 @@ export const projects: Project[] = [
       "Rewards shop where credits buy hoodies, gift cards, and sticker packs",
     ],
     screenshots: [
-      shot("ridepool", 0, "Upcoming events feed"),
-      shot("ridepool", 1, "Event detail with available ride offers"),
-      shot("ridepool", 2, "Credits and the rewards shop"),
+      {
+        caption: "Home — upcoming events at your school, searchable",
+        image: "/projects/ridepool/home-feed.png",
+        device: "mobile",
+      },
+      {
+        caption: "Sign-up — your role decides what you can post",
+        image: "/projects/ridepool/role.png",
+        device: "mobile",
+      },
+      {
+        caption: "Event detail — offer a ride and earn 20 credits",
+        image: "/projects/ridepool/event-club.png",
+        device: "mobile",
+      },
+      {
+        caption: "Available rides — seats left, and how fast they're going",
+        image: "/projects/ridepool/event-rides.png",
+        device: "mobile",
+      },
+      {
+        caption: "My Rides — what you're driving to, requests, and past trips",
+        image: "/projects/ridepool/my-rides.png",
+        device: "mobile",
+      },
+      {
+        caption: "Rewards Shop — credits from driving buy real things",
+        image: "/projects/ridepool/rewards.png",
+        device: "mobile",
+      },
     ],
+    thumbnail: "/projects/ridepool/home-feed.png",
     stack: ["SwiftUI", "iOS 17+", "Firebase Auth", "Cloud Firestore"],
     url: "https://github.com/aarana-ctrl/RidePool",
     year: "2026",
