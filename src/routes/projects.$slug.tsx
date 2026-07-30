@@ -215,6 +215,17 @@ function ProjectDetail() {
               </div>
             )}
 
+            {mobile.length === 0 && project.mobileStatus && (
+              <div className="mt-16">
+                <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-6">
+                  Mobile
+                </p>
+                <div className="squircle border border-dashed border-border bg-card/30 px-8 py-10 text-center">
+                  <p className="text-sm text-muted-foreground">{project.mobileStatus}</p>
+                </div>
+              </div>
+            )}
+
             {project.imageNote && (
               <p className="mt-12 flex items-start gap-2 text-xs text-muted-foreground/80 italic">
                 <span aria-hidden className="not-italic">

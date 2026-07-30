@@ -17,6 +17,8 @@ export type Project = {
   thumbnail?: string;
   /** Shown under the gallery when captures have redactions. */
   imageNote?: string;
+  /** Explains a missing device group in the gallery, e.g. mobile still in build. */
+  mobileStatus?: string;
   /** Technology chips shown on the detail page. */
   stack: string[];
   /** Source repo. Omitted while a project is still private. */
@@ -235,9 +237,9 @@ export const projects: Project[] = [
     category: "Tool",
     note: "Open source",
     shortDescription:
-      "A student assignment tracker that syncs Canvas and Gradescope deadlines into one list, with natural-language task entry.",
+      "A student assignment tracker that syncs directly with Canvas and Gradescope, so all your due dates live in one place.",
     longDescription:
-      'TaskFlow pulls assignments from Canvas, Gradescope, and course websites via their iCal feeds and merges them into a unified task list. You can also add your own tasks in plain English — "CS hw tuesday at 11pm" — and dates, days, and times are detected automatically. Tasks sort themselves into Overdue, Today, Upcoming, and Later, and sync across every device.',
+      'TaskFlow pulls assignments from Canvas, Gradescope, and course websites via their iCal feeds and merges them into a unified task list. You can also add your own tasks in plain English — "CS hw tuesday at 11pm" — and dates, days, and times are detected automatically. Tasks sort themselves into Overdue, Today, Upcoming, and Later, and sync across every device. Built as a single-page web app on Vercel, with Firebase handling authentication and storage.',
     highlights: [
       "Canvas and Gradescope sync — paste an iCal feed URL once and it re-syncs every six hours",
       "Natural language input that parses dates, days, times, and recurring schedules",
@@ -246,12 +248,92 @@ export const projects: Project[] = [
       "Google and Apple sign-in through Firebase, with no passwords to manage",
       "Mobile-first layout with a hamburger drawer, bottom-sheet details, and full safe-area support",
     ],
-    screenshots: [
-      shot("taskflow", 0, "Unified task list sorted by urgency"),
-      shot("taskflow", 1, "Natural language quick capture"),
-      shot("taskflow", 2, "Calendar view with per-day indicators"),
+    features: [
+      {
+        title: "Sync & Integrations",
+        blurb:
+          "TaskFlow fetches each iCal feed through a secure serverless proxy, parses the events, and merges them into one list. Duplicates across sources — same title and same due date — are collapsed automatically.",
+        items: [
+          "Canvas — paste the Feed URL from Account → Settings → Calendar (it starts with webcal://)",
+          "Gradescope — optional, for schools that expose a standalone calendar feed",
+          "Course websites — add as many additional course calendar feeds as you like",
+          "Auto-syncs every six hours, with a Sync Now button to force it anytime",
+        ],
+      },
+      {
+        title: "Natural Language Input",
+        blurb:
+          "Type a task the way you'd say it and TaskFlow works out when it's due.",
+        items: [
+          '"finish essay by friday" → due this Friday',
+          '"chem lab report monday at 11:59pm" → due Monday 11:59 PM',
+          '"read chapter 5 in 3 days" → due 3 days from today',
+          '"weekly review every sunday" → a recurring weekly task',
+        ],
+      },
+      {
+        title: "Task Views",
+        blurb: "Everything sorts itself by urgency, with several ways to look at it.",
+        items: [
+          "Today, Upcoming, All Tasks, Calendar, and Completed",
+          "Automatic Overdue / Today / This Week / Later grouping",
+          "Week strip — tap any day to filter tasks to that date",
+          "Calendar view — monthly overview with colour-coded indicators per source",
+        ],
+      },
+      {
+        title: "Task Details",
+        items: [
+          "Due dates, reminders, priority, and recurring schedules",
+          "Source badges showing whether a task came from Canvas, Gradescope, a course site, or by hand",
+          "Completion animations — a green checkmark bounce with strikethrough",
+        ],
+      },
+      {
+        title: "Accounts & Experience",
+        items: [
+          "Google and Apple sign-in — no passwords, synced through Firebase",
+          "Dark mode toggle in Settings that persists across sessions",
+          "Mobile-first — hamburger drawer nav, bottom-sheet task details, full safe-area support",
+        ],
+      },
     ],
-    stack: ["React", "Firebase", "Vercel Functions", "iCal"],
+    screenshots: [
+      {
+        caption: "All Tasks — automatic Overdue, Today, and This Week grouping",
+        image: "/projects/taskflow/alltasks-dark.png",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Calendar — monthly overview with per-source indicators",
+        image: "/projects/taskflow/calendar-dark.png",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Completed — finished work, struck through and archived",
+        image: "/projects/taskflow/completed-dark.png",
+        device: "desktop",
+        theme: "dark",
+      },
+      {
+        caption: "Today — the week strip and natural language capture bar",
+        image: "/projects/taskflow/today-light.png",
+        device: "desktop",
+        theme: "light",
+      },
+      {
+        caption: "Integrations — Canvas connected, plus extra course feeds",
+        image: "/projects/taskflow/integrations-light.png",
+        device: "desktop",
+        theme: "light",
+      },
+    ],
+    thumbnail: "/projects/taskflow/today-light.png",
+    mobileStatus:
+      "Screenshots of the mobile app aren't available yet — it's still under development.",
+    stack: ["React", "Firebase Auth", "Firestore", "Vercel Functions", "iCal"],
     url: "https://github.com/aarana-ctrl/taskFlow",
     liveUrl: "https://taskflow-deploy-lilac.vercel.app",
     year: "2026",
