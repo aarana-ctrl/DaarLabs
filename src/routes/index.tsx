@@ -1,7 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { LightningLayer, Nav, Footer } from "@/components/SiteChrome";
+import { projects } from "@/lib/projects-data";
 import stormVideo from "@/assets/storm-hero.mp4.asset.json";
+
+// "N ships, already sailing" — counted from the projects that have shipped
+// something people can actually open, so the headline can't drift from reality.
+const SAILING = projects.filter((p) => p.liveUrl).length;
+const NUMBER_WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"];
+const SAILING_WORD = NUMBER_WORDS[SAILING] ?? String(SAILING);
 
 // Seconds into the hero video when the trident has finished landing.
 // After the first playthrough, the loop restarts from this point so the
@@ -201,7 +208,8 @@ function Home() {
           <div>
             <p className="text-[10px] tracking-[0.4em] uppercase text-gold mb-6">Selected Work</p>
             <h2 className="font-serif text-[clamp(2rem,4.5vw,4rem)] leading-[1.05]">
-              Four ships, <span className="text-gold">already sailing.</span>
+              {SAILING_WORD} {SAILING === 1 ? "ship" : "ships"},{" "}
+              <span className="text-gold">already sailing.</span>
             </h2>
           </div>
           <Link
