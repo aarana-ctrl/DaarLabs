@@ -45,11 +45,6 @@ export type FeatureGroup = {
   items: string[];
 };
 
-const shot = (slug: string, i: number, caption: string): Shot => ({
-  caption,
-  image: `https://picsum.photos/seed/${slug}-${i}/1600/1000`,
-});
-
 export const projects: Project[] = [
   {
     slug: "liquid",
@@ -603,24 +598,88 @@ export const projects: Project[] = [
   {
     slug: "suits-ai",
     name: "Suits AI",
-    tag: "In the forge",
+    tag: "Web / RAG",
     category: "Research",
     note: "In development",
     shortDescription:
-      "Placeholder — details to come. Suits AI is in development and its repository is not yet public. Working name, subject to change.",
+      "Legal intelligence, tailored to your situation — clear, cited answers on immigration, tax, and everyday legal questions.",
     longDescription:
-      "This entry is a placeholder. Suits AI is still being built and its repository isn't public, so there was nothing to scrape, and the working name may change. Drop the real description, highlights, stack, and links in here whenever you're ready — every view picks them up automatically.",
+      "Suits AI is an AI legal information assistant for the people who can't put a lawyer on retainer for every question — immigrants, international students, anyone facing a form or a notice they don't understand. You describe your situation and get a plain-English answer grounded in current statutes, regulations, and case law, with every source cited and an 'accurate as of' date attached. It's deliberately a generalist, covering the questions people actually face — immigration, taxes, traffic, housing, small claims, employment, consumer, legal news — and deepening in each area over time. It provides legal information, not legal advice, and it says so plainly.",
     highlights: [
-      "Placeholder highlight — replace with a real capability",
-      "Placeholder highlight — replace with a real capability",
-      "Placeholder highlight — replace with a real capability",
+      "Retrieval-augmented answers over primary legal sources — every claim links to something you can open and read",
+      "Each answer stamped 'accurate as of' a date, with the corpus re-indexed on a scan schedule rather than re-trained",
+      "Honest limits — confidence signals, and escalation to a licensed attorney for high-stakes matters",
+      "Broad coverage: immigration, tax, traffic, housing, small claims, employment, consumer, and legal news",
+      "The model is never trained on the law; it retrieves the law at query time, which is what keeps answers current",
+      "Monochrome-luxury editorial UI with persisted light and dark modes, built as a zero-build static site",
     ],
-    screenshots: [
-      shot("suits-ai", 0, "Placeholder — screen one"),
-      shot("suits-ai", 1, "Placeholder — screen two"),
-      shot("suits-ai", 2, "Placeholder — screen three"),
+    features: [
+      {
+        title: "Grounded, Cited, Dated",
+        blurb:
+          "The architecture is the honesty policy: nothing is answered from memory, so nothing can drift from the source.",
+        items: [
+          "Retrieval-augmented generation over eCFR (Title 8 immigration, Title 26 tax), CourtListener case law, govinfo, USCIS, and IRS material",
+          "Every claim carries a link to the source it came from",
+          "Answers are stamped with the date the corpus was last refreshed",
+          "Re-index, not re-train — currency is a pipeline problem, not a model problem",
+        ],
+      },
+      {
+        title: "Why ~95%, And Why That's The Point",
+        blurb:
+          "We don't claim 100%. Stanford RegLab / HAI found in 2025 that even leading commercial legal-research AIs hallucinate on a meaningful share of queries.",
+        items: [
+          "Calibrated honesty over false confidence — roughly 1 in 20 answers may be wrong, and the product says so",
+          "Every answer is grounded, cited, dated, and auditable",
+          "High-stakes questions — criminal exposure, filing deadlines, immigration status — escalate to a human attorney rather than being guessed at",
+          "Planned evaluation harness covering citation validity, escalation recall, and sycophancy",
+        ],
+      },
+      {
+        title: "How It's Built",
+        blurb:
+          "A static multi-page site over a Python ingestion pipeline and a Postgres vector store.",
+        items: [
+          "Front end is plain HTML, CSS, and JS with no build step, deployed static on Vercel",
+          "Hybrid vector and keyword search over Postgres with pgvector; embeddings behind a swappable managed API",
+          "Python stdlib ingestion chunks free primary sources into the corpus, on a GitHub Actions / Vercel Cron schedule",
+          "Nav and footer injected from a single source so links stay consistent across every page",
+          "Explicit .html routing so browser history and back-forward behave natively",
+        ],
+      },
+      {
+        title: "What's Next",
+        blurb: "The site and pipeline exist; the reasoning endpoint is the current work.",
+        items: [
+          "Wire the chat interface to a real /api/ask RAG endpoint over the corpus",
+          "Expand the corpus — govinfo US Code, the USCIS Policy Manual, IRS publications, per-state material",
+          "Add accounts and a user 'situation profile', and migrate the front end to Next.js",
+          "Later phases: assisted tax prep, document assembly, and lawyer referral",
+        ],
+      },
+      {
+        title: "The Legal Position",
+        blurb:
+          "Stated plainly on the site, because a product in this space that's vague about it is a product to distrust.",
+        items: [
+          "Suits AI provides legal information and news for general educational purposes",
+          "It does not provide legal advice, does not practice law, and is not a law firm",
+          "Using it creates no attorney–client relationship; verify anything important with primary sources or a licensed attorney",
+          "Not affiliated with, endorsed by, or connected to the television programme “Suits” or its rights holders",
+        ],
+      },
     ],
-    stack: ["TBD"],
+    screenshots: [],
+    stack: [
+      "HTML/CSS/JS",
+      "Vercel",
+      "Postgres",
+      "pgvector",
+      "Python",
+      "RAG",
+      "GitHub Actions",
+    ],
     year: "2026",
   },
 ];

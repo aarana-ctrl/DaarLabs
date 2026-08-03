@@ -40,7 +40,6 @@ function ProjectDetail() {
   const desktopDark = rest.filter((s) => s.theme !== "light");
   const desktopLight = rest.filter((s) => s.theme === "light");
   const mobile = shots.filter((s) => s.device === "mobile");
-  const isPlaceholder = shots.some((s) => s.image.includes("picsum.photos"));
 
   return (
     <PageShell>
@@ -185,11 +184,6 @@ function ProjectDetail() {
                 <p className="text-[10px] tracking-[0.4em] uppercase text-gold mb-4">Gallery</p>
                 <h2 className="font-serif text-3xl md:text-5xl">A look inside</h2>
               </div>
-              {isPlaceholder && (
-                <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
-                  Placeholder imagery
-                </span>
-              )}
             </div>
 
             {themed ? (
