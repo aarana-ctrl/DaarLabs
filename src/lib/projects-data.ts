@@ -503,24 +503,94 @@ export const projects: Project[] = [
   {
     slug: "daarforce",
     name: "DaarForce",
-    tag: "In the forge",
+    tag: "Web / TypeScript",
     category: "Tool",
-    note: "In development",
+    note: "Developer preview",
     shortDescription:
-      "Placeholder — details to come. DaarForce is in development and its repository is not yet public.",
+      "AI security for the sites people ship fast — find the holes before hackers do.",
     longDescription:
-      "This entry is a placeholder. DaarForce is still being built and its repository isn't public, so there was nothing to scrape. Drop the real description, highlights, stack, and links in here whenever you're ready — the showcase, archive, and detail page all read from this one file.",
+      "A huge wave of sites and apps are now built with AI coding tools — Lovable, Bolt, v0, Replit, Cursor — and anyone can ship a real product in a weekend. Almost none of them are secure, and the people building them usually don't know what a security hole looks like, let alone how to fix one. They can't afford a security engineer, so they launch apps that leak API keys, expose a database, or let attackers inject code, and only find out when something goes wrong. Existing tooling doesn't help: it's built for security experts and returns a wall of CVEs and jargon a non-technical founder can't act on. DaarForce is an AI security analyst for exactly those builders — it reads your code, probes your live site, correlates the two to work out what is actually exploitable, scores your posture, and hands you each issue in plain English with the exact fix. Grammarly for security.",
     highlights: [
-      "Placeholder highlight — replace with a real capability",
-      "Placeholder highlight — replace with a real capability",
-      "Placeholder highlight — replace with a real capability",
+      "Hybrid scanning — static code analysis and live-site probing, correlated so the findings are real rather than theoretical",
+      "Plain-language findings — what it is, why it matters, and where, written for a non-technical site owner",
+      "A concrete AI-written patch for every finding, plus one-click fix pull requests on connected GitHub repos",
+      "Secret scanning for committed AWS, Stripe, Google, GitHub, OpenAI, and private keys — the most common vibe-coded mistake",
+      "A single 0–100 security score with a prioritised fix-these-first summary",
+      "Ownership-gated live scans — DNS TXT or .well-known proof before DaarForce ever probes a site",
     ],
-    screenshots: [
-      shot("daarforce", 0, "Placeholder — screen one"),
-      shot("daarforce", 1, "Placeholder — screen two"),
-      shot("daarforce", 2, "Placeholder — screen three"),
+    features: [
+      {
+        title: "The Problem",
+        blurb:
+          "The fastest-growing group of builders is also the least protected, and current tooling is aimed at everyone but them.",
+        items: [
+          "AI coding tools let anyone ship a real product in a weekend, with no security review anywhere in the loop",
+          "The resulting apps leak API keys, expose databases, and accept injected code",
+          "A security engineer is out of reach for a solo founder or a small business",
+          "Existing scanners answer with CVE IDs and jargon — accurate, and useless to the person who has to fix it",
+        ],
+      },
+      {
+        title: "Two Engines, One Verdict",
+        blurb:
+          "DaarForce looks at your project the way a careful reviewer and an attacker each would, then reconciles the two.",
+        items: [
+          "Static engine — reads the code for insecure patterns, leaked secrets, unsafe database queries, exposed admin keys, and vulnerable dependencies",
+          "Dynamic engine — probes the live site with no code access: exposed files, missing protections, secrets shipped to the browser",
+          "Correlation layer — dedupes, cross-confirms, and scores; anything both engines see is flagged high-confidence",
+          "LLM reasoning — kills false positives, then explains and fixes what survives",
+          "Language-agnostic, with deeper rule coverage for the common vibe-coded stacks: Next.js, Supabase, Node",
+        ],
+      },
+      {
+        title: "Findings You Can Actually Act On",
+        blurb:
+          "Every result is written for the person who owns the site, not for a security team.",
+        items: [
+          "A plain-English title, why it matters, and exactly where it lives",
+          "An AI-written patch for each finding, plus a step to verify the fix worked",
+          "One-click pull requests against connected GitHub repos",
+          "Dependency audit flagging outdated packages with known vulnerabilities",
+          "Visual checks as a secondary pass — placeholder text and broken renders left live on the site",
+          "First scan free; fixes, fix PRs, and ongoing monitoring are the subscription",
+        ],
+      },
+      {
+        title: "Encrypted By Design",
+        blurb:
+          "A scan result is a map of how to break into someone's app, which makes it the most sensitive data we hold.",
+        items: [
+          "Every stored scan is encrypted at rest with AES-256-GCM",
+          "The clone path is never persisted and temp clones are deleted after each scan",
+          "Secrets are redacted wherever they're displayed",
+          "The web app ships the headers it tells you to ship — CSP, HSTS, X-Frame-Options, nosniff",
+        ],
+      },
+      {
+        title: "Cheap and Accurate Now, A Model Later",
+        blurb:
+          "Detection is deterministic so nothing is hallucinated; the model is only used for judgement and writing.",
+        items: [
+          "Deterministic tooling finds candidates; a frontier LLM reasons about them and writes the fixes",
+          "About 80% accuracy today with no training data of our own",
+          "Every scan produces labelled data — detection, judgement, user action, re-scan result",
+          "That dataset is the path to a fine-tuned, cheaper, 90%+ model, which is the long-term moat",
+          "Provider-agnostic reasoning layer — Anthropic, OpenAI, or our own model behind one interface, with graceful fallback so a downed API never breaks a scan",
+        ],
+      },
     ],
-    stack: ["TBD"],
+    screenshots: [],
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Express",
+      "Claude API",
+      "Postgres",
+      "GitHub App",
+      "AES-256-GCM",
+    ],
     year: "2026",
   },
   {
