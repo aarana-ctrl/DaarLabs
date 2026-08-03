@@ -12,11 +12,11 @@ const SAILING_WORD = NUMBER_WORDS[SAILING] ?? String(SAILING);
 
 // The hero plays through once — the trident lands, the storm builds — and then
 // settles into a short cycle so there's no hard cut back to the beginning.
-// LOOP variant 2: intro 0 → 8s, then cycle 7s → 8s.
+// LOOP variant 3: intro 0 → 8s, then cycle 6s → 8s.
 // The file is exactly 8.000s, so the cycle turns just shy of the last frame —
 // hitting the true end stalls the element for a beat before it can seek back.
 const INTRO_END_SECONDS = 8.0;
-const LOOP_IN_SECONDS = 7.0;
+const LOOP_IN_SECONDS = 6.0;
 const LOOP_OUT_SECONDS = 7.94;
 
 export const Route = createFileRoute("/")({
