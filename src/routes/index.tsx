@@ -10,10 +10,12 @@ const SAILING = projects.filter((p) => p.liveUrl).length;
 const NUMBER_WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"];
 const SAILING_WORD = NUMBER_WORDS[SAILING] ?? String(SAILING);
 
-// Seconds into the hero video when the trident has finished landing.
-// After the first playthrough, the loop restarts from this point so the
-// trident only lands once and the storm continues seamlessly.
-const LOOP_START_SECONDS = 4.0;
+// The hero plays through once — the trident lands, the storm builds — and then
+// settles into a short cycle so there's no hard cut back to the beginning.
+// LOOP variant 1: intro 0 → 8s, then cycle 5s → 6s.
+const INTRO_END_SECONDS = 8.0;
+const LOOP_IN_SECONDS = 5.0;
+const LOOP_OUT_SECONDS = 6.0;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,16 +45,39 @@ function Home() {
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const onEnded = () => {
+    let raf = 0;
+    let looping = false;
+
+    const rewind = () => {
+      looping = true;
       try {
-        v.currentTime = LOOP_START_SECONDS;
-        void v.play();
+        v.currentTime = LOOP_IN_SECONDS;
+        if (v.paused) void v.play().catch(() => {});
       } catch {
-        /* noop */
+        /* seeking before metadata lands — the next frame will retry */
       }
     };
-    v.addEventListener("ended", onEnded);
-    return () => v.removeEventListener("ended", onEnded);
+
+    // Polled per frame rather than on `timeupdate`, which only fires ~4×/sec
+    // and would overshoot the loop point by a visible amount.
+    const tick = () => {
+      raf = requestAnimationFrame(tick);
+      if (v.seeking || !v.duration) return;
+      const t = v.currentTime;
+      if (!looping) {
+        if (t >= INTRO_END_SECONDS - 0.05) rewind();
+      } else if (t >= LOOP_OUT_SECONDS || t < LOOP_IN_SECONDS - 0.25) {
+        v.currentTime = LOOP_IN_SECONDS;
+      }
+    };
+
+    raf = requestAnimationFrame(tick);
+    // Belt and braces: if the file ends before the poll catches it.
+    v.addEventListener("ended", rewind);
+    return () => {
+      cancelAnimationFrame(raf);
+      v.removeEventListener("ended", rewind);
+    };
   }, []);
 
   // Scrolling away calms the storm: the film slows to a halt, rain and
