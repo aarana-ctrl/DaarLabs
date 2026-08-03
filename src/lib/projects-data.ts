@@ -579,7 +579,14 @@ export const projects: Project[] = [
         ],
       },
     ],
-    screenshots: [],
+    screenshots: [
+      {
+        caption: "Run a scan — point it at a repo, a live URL, or both",
+        image: "/projects/daarforce/scan-hero.jpg",
+        device: "desktop",
+      },
+    ],
+    thumbnail: "/projects/daarforce/scan-hero.jpg",
     stack: [
       "Next.js",
       "React",

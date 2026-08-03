@@ -18,7 +18,7 @@ const LOOP_START_SECONDS = 4.0;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "DaarLabs — Venture beyond the unknown" },
+      { title: "DaarLabs" },
       {
         name: "description",
         content:

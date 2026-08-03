@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Trident } from "@/components/Trident";
 
 /**
  * Storm ambience — distant lightning flashes over the page.
@@ -51,10 +50,9 @@ export function Nav({ transparent = false }: { transparent?: boolean }) {
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex justify-between items-center">
         <Link
           to="/"
-          aria-label="DaarLabs — home"
-          className="text-muted-foreground hover:text-gold transition-colors"
+          className="text-[11px] tracking-[0.35em] uppercase text-muted-foreground hover:text-gold transition-colors"
         >
-          <Trident className="h-8 w-auto" />
+          DAARLABS
         </Link>
         <div className="flex gap-6 md:gap-10 items-center">
           <Link
@@ -89,7 +87,7 @@ export function Footer() {
     <footer className="relative border-t border-border py-20 px-6 md:px-12 bg-background">
       <div className="max-w-[100rem] mx-auto grid md:grid-cols-4 gap-12">
         <div className="md:col-span-2">
-          <Trident className="h-14 w-auto text-gold mb-5" />
+          <div className="font-serif text-3xl text-gold mb-4">DaarLabs</div>
           <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
             Built in the storm. Forged for the unknown.
           </p>
